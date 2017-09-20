@@ -1,0 +1,6 @@
+﻿namespace DddRestaurant
+{
+    class ReservationRequestService
+    {
+    }
+}

@@ -1,6 +1,6 @@
 ﻿namespace DddRestaurant.Commands
 {
-    class CreateReservationRequestV1
+    public class DenyReservationRequest
     {
 
     }

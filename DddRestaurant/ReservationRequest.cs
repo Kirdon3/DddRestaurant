@@ -9,12 +9,15 @@
     {
         private IEventDispatcher eventDispatcher;
         private ITableAvailabilityService tableAvailabilityService;
+        private IRestaurantConfigurationService restaurantConfigurationsService;
 
         public ReservationRequest(IEventDispatcher eventDispatcher,
-            ITableAvailabilityService tableAvailabilityService)
+            ITableAvailabilityService tableAvailabilityService,
+            IRestaurantConfigurationService restaurantConfigurationService)
         {
             this.eventDispatcher = eventDispatcher;
             this.tableAvailabilityService = tableAvailabilityService;
+            this.restaurantConfigurationsService = restaurantConfigurationService;
         }
 
         public int Id { get; set; }
@@ -28,6 +31,10 @@
         public int RestaurantId { get; set; }
 
         public bool? Accepted { get; set; }
+
+        public bool Canceled { get; set; }
+
+        public bool CalledOff { get; set; }
 
         public int ClientId { get; set; }
 
@@ -47,8 +54,6 @@
             Accepted = false;
             var reservationDeniedEvent = new ReservationRequestDenied();
             eventDispatcher.DispatchReservationRequestDeniedEvent(reservationDeniedEvent);
-
-
         }
 
         public void ReservationRequestDeniedHandler(DenyReservationRequest command)
@@ -57,6 +62,35 @@
 
             var reservationDeniedEvent = new ReservationRequestDenied();
             eventDispatcher.DispatchReservationRequestDeniedEvent(reservationDeniedEvent);
+        }
+
+        public void ReservationCanceledHandler(CancelReservationRequest command)
+        {
+            Canceled = true;
+            var reservationCancelledEvent = new ReservationCancelledEvent();
+            eventDispatcher.DispatchReservationCancelledEvent(reservationCancelledEvent);
+        }
+
+        public void ReservationCalledOffHandler(CallOffReservationRequest command)
+        {
+            if (StartDate.Date.AddDays(-restaurantConfigurationsService.CallOffPossibleInDays()) < command.RequestDate)
+            {
+                var callOffDeniedEvent = new CallOffDeniedEvent
+                {
+                    DenyReason =
+                        $"Call off not possible {restaurantConfigurationsService.CallOffPossibleInDays()} days before reservation."
+                };
+
+                eventDispatcher.DispatchCallOffDeniedEvent(callOffDeniedEvent);
+            }
+            else
+            {
+                CalledOff = true;
+                var reservationCalledOffEvent = new ReservationCalledOff();
+                eventDispatcher.DispatchReservationCalledOffEvent(reservationCalledOffEvent);
+            }
+
+
         }
     }
 }

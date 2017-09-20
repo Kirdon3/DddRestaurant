@@ -14,5 +14,9 @@ namespace DddRestaurant
 
         void DispatchReservationRequestDeniedEvent(ReservationRequestDenied reservationRequestDenied);
 
+        void DispatchReservationCancelledEvent(ReservationCancelledEvent reservationCancelledEvent);
+
+        void DispatchReservationCalledOffEvent(ReservationCalledOff reservationCalledOffEvent);
+        void DispatchCallOffDeniedEvent(CallOffDeniedEvent callOffDeniedEvent);
     }
 }

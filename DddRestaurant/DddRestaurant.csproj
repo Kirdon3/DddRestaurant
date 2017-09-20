@@ -40,6 +40,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CallOffDeniedEvent.cs" />
+    <Compile Include="CallOffReservationRequest.cs" />
+    <Compile Include="CancelReservationRequest.cs" />
     <Compile Include="Commands\AcceptReservationRequest.cs" />
     <Compile Include="Commands\DenyReservationRequest.cs" />
     <Compile Include="Commands\CreateReservationRequest.cs" />
@@ -47,7 +50,10 @@
     <Compile Include="Events\ReservationRequestDenied.cs" />
     <Compile Include="Events\ReservationRequestAccepted.cs" />
     <Compile Include="Events\ReservationRequestCreated.cs" />
+    <Compile Include="IRestaurantConfigurationService.cs" />
     <Compile Include="ITableAvailabilityService.cs" />
+    <Compile Include="ReservationCalledOff.cs" />
+    <Compile Include="ReservationCancelledEvent.cs" />
     <Compile Include="ReservationRequest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReservationRequestService.cs" />
